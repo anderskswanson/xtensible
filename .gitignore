@@ -1,5 +1,7 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# Misc project files
+auth.json
+
+# Byte-compiled / optimized / DLL files__pycache__/
 *.py[cod]
 *$py.class
 
