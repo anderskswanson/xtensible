@@ -1,5 +1,7 @@
 # Misc project files
 auth.json
+.vscode/
+.idea/
 
 # Byte-compiled / optimized / DLL files__pycache__/
 *.py[cod]
