@@ -39,21 +39,3 @@ class XtensibleBot:
             return None
 
         return content[1:].split(' ')
-
-"""
-
-    async def on_message(self, message):
-        content = message.content
-        if len(content) > 1 and content[0] != '!':
-            return  # nothing to do here!
-        # read command variables
-
-        args = self.command_handler.parse_request(content)
-
-        if args['src'] == 'tags':
-            await self.send_message(message.channel, str(self.command_handler))
-        elif args['src'] == 'help':
-            await self.send_message(message.channel, ERROR_MESSAGES['HELP'])
-        else:
-await self.send_message(message.channel, self._query_handler(**args))
-"""
