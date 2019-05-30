@@ -1,4 +1,4 @@
-from bot.bot import XtensibleBot
+from app.bot.bot import XtensibleBot
 
 if __name__ == '__main__':
     print('Starting XtensibleBot')

@@ -1,11 +1,11 @@
 PY=python3
-MAIN=app/main.py
-TEST=app/test/run_tests.py
+MAIN=app.main
+TEST=app.test.run_tests
 .PHONY: test
 
 run:
-	$(PY) $(MAIN)
+	$(PY) -m $(MAIN)
 
 test:
-	$(PY) $(TEST)
+	$(PY) -m $(TEST)
 	
