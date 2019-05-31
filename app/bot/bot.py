@@ -13,6 +13,10 @@ class XtensibleBot:
         self._client = client
         self._handler = handler
 
+        # load modules
+        self._handler.add_module(modules)
+        self._handler.load_modules()
+
         # point client events to bot methods
         client.event(self.on_ready)
         client.event(self.on_message)

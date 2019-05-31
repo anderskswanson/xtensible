@@ -5,4 +5,4 @@ class BaseModule:
     Consider adding as contained class
     """
     def __init__(self):
-        raise NotImplementedError()
+        print('hello')
