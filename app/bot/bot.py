@@ -28,7 +28,11 @@ class XtensibleBot:
         print('Started XtensibleBot')
 
     async def on_message(self, message):
-        tokens = self._parse_message(message.content)
+        output = self._handler.handle(message.content)
+        await self._client.send_message(
+            message.channel,
+            output
+        )
 
         if tokens is not None:
             output = self._handler.handle(tokens)
@@ -36,10 +40,3 @@ class XtensibleBot:
                 message.channel,
                 output
             )
-
-    def _parse_message(self, content):
-        # content should be a !command
-        if len(content) > 1 and content[0] != '!':
-            return None
-
-        return content[1:].split(' ')

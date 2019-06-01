@@ -1,4 +1,8 @@
 
+def test(*args, **kwargs):
+    print("this is a test")
+    
+
 class BaseModule: 
     """
     Module of native features for XtensibleBot
