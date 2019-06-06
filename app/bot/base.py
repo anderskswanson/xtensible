@@ -55,6 +55,9 @@ class BaseModule:
     def __getitem__(self, key):
         return self._modules[key]
 
+    def __contains__(self, key):
+        return key in self._modules
+
     def __delitem__(self, key):
         self._modules.pop(key)
 

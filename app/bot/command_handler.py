@@ -14,6 +14,7 @@ class CommandHandler:
     caller
     """
 
+    # Error strings for caller, returned if running the command goes awry...
     HANDLER_ERR = 'Error parsing message {}\nMessage format: !<module> <func> [arguments...]'
     FUNC_NOT_FOUND_ERR = 'Function {} not found in module {}'
     MODULE_NF_ERR = 'Module {} not found'
@@ -52,7 +53,9 @@ class CommandHandler:
                         fn.__name__
                     )
             else:
-                output = self.FUNC_NOT_FOUND_ERR.format(parsed_message.func)
+                output = self.FUNC_NOT_FOUND_ERR.format(
+                    parsed_message.func,
+                    parsed_message.module)
         else:
             output = self.MODULE_NF_ERR.format(parsed_message.module)
         return output
