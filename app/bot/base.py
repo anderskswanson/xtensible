@@ -11,18 +11,23 @@ class BaseModule:
     """
 
     def __init__(self):
-        self._modules = dict()
+        self._modules = {'base': self}
     
     # merge iterable of module names or string module name into the module dict
     def add_module(self, item):
+        loaded_modules = []
+        failed_loads = []
         if not isinstance(item, collections.Iterable):
             item = [item]
-        else:
-            # merge module hashmaps
-            new_modules = {key: None for key in item}
-            self._modules = {**new_modules, **self._modules}
-        # force reload of all modules
-        self.load_modules()
+        # merge module hashmaps
+        for name in item:
+            try:
+                module_obj = self.load_module(name)
+                self._modules[name] = module_obj
+                loaded_modules.append(name)
+            except ModuleNotFoundError:
+                failed_loads.append(name)
+        return loaded_modules, failed_loads
 
     # add a module script into the module list
     def load_module(self, module):

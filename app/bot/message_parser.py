@@ -36,7 +36,7 @@ class MessageParser:
 
         def __hash__(self):
             return hash(self.module, self.func, self.args, self.kwargs)
-        
+
     TOKEN_ERR = 'Cannot parse a message with less than two tokens'
 
     def _get_module(self, message):

@@ -1,6 +1,11 @@
 import unittest
 from app.bot.command_handler import CommandHandler
 
+class FakeMessageParser:
+    pass
+
+class FakeBaseModule:
+    pass
 
 class TestCommandHandler(unittest.TestCase):
 
