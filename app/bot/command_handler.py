@@ -42,7 +42,7 @@ class CommandHandler:
                         **parsed_message.kwargs
                     )
                 except TypeError:
-                    signature = inspect.getargspec(fn)
+                    signature = fn.__doc__
                     output = self.INVALID_ARGS_ERR.format(
                         fn.__name__,
                         signature

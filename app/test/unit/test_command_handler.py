@@ -41,8 +41,19 @@ class TestCommandHandler(unittest.TestCase):
     def tearDown(self):
         self.command_handler = None
 
-    def test_evaluate_message(self):
+    def test_function_not_found(self):
         # should return a function not found message
         msg = self.command_handler._message_parser.parse_message('list foo bar')
         out = self.command_handler._evaluate_message(msg)
+        self.assertEqual(self.command_handler.FUNC_NOT_FOUND_ERR.format('foo', 'list'), out)
 
+    def test_module_not_found(self):
+        msg = self.command_handler._message_parser.parse_message('foo bar bat')
+        out = self.command_handler._evaluate_message(msg)
+        self.assertEqual(self.command_handler.MODULE_NF_ERR.format('foo'), out)
+
+    def test_invalid_args(self):
+        msg = self.command_handler._message_parser.parse_message('list append baz')
+        out = self.command_handler._evaluate_message(msg)
+        expected = self.command_handler.INVALID_ARGS_ERR.format(list.append.__name__, list.append.__doc__)
+        self.assertEqual(expected, out)
