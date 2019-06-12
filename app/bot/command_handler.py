@@ -69,5 +69,5 @@ class CommandHandler:
             if len(tokens) > 1 and tokens[0] not in self._base_module.keys():
                 ouptut = self.MODULE_NF_ERR.format(tokens[0])
             else:
-                output = self.HANDLER_ERR
+                output = self.HANDLER_ERR.format(tokens)
         return output

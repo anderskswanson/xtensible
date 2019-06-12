@@ -39,6 +39,10 @@ class TestMessageParser(unittest.TestCase):
             self.ARGS,
             self.message_parser._get_args(self.TOKENS[2:])
         )
+        self.assertEqual(
+            ['hello'],
+            self.message_parser._get_args(['hello'])
+        )
 
     def test_get_kwargs(self):
         self.assertEqual(
