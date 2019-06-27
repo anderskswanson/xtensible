@@ -12,13 +12,44 @@ class TestBase(unittest.TestCase):
     def tearDown(self):
         self.base = None
 
+    def test_static_module_loaded(self):
+        self.assertTrue('util' in self.base)
+
+    def test_load_module(self):
+        self.base._modules = dict()
+        self.base._load_module('util')
+        self.assertTrue('util' in self.base)
+
+    def test_module_nf(self):
+        try:
+            self.base._load_module('invalid module')
+        except ModuleNotFoundError:
+            pass
+        except Exception as e:
+            self.fail('Unexpected exception raise', e)
+        else:
+            self.fail('Expected exception {}', ModuleNotFoundError.__name__)
+
+    def test_addmod(self):
+        self.base._modules = dict()
+        rv = self.base.addmod('util')
+        self.assertTrue('util' in self.base)
+        self.assertEqual((['util'], []), rv)
+
+    def test_add_two_modules(self):
+        self.base_modules = dict()
+        rv = self.base.addmod(['util', 'not a mod'])
+        self.assertEqual((['util'], ['not a mod']), rv)
+
     def test_keys(self):
-        expected = {'base': ''}.keys()
+        self.base._modules = dict()
+        self.base.addmod('util')
+        expected = {'util': ''}.keys()
         self.assertEqual(expected, self.base.keys())
 
     def test_describemod(self):
         out = self.base.describemod('base')
-        funcs = 'addmod delmod lsmod load_modules describemod'.split()
+        funcs = 'addmod delmod lsmod describemod'.split()
         for func in funcs:
             self.assertTrue(func in out)
 
@@ -32,10 +63,12 @@ class TestBase(unittest.TestCase):
         self.assertTrue('base' in out)
 
     def test_delmod(self):
+        self.base._modules = dict()
+        self.base._load_module('util')
         self.assertTrue(len(self.base) == 1)
-        out = self.base.delmod('base')
+        out = self.base.delmod('util')
         self.assertTrue(len(self.base) == 0)
-        self.assertTrue('base' in out)
+        self.assertTrue('util' in out)
     
     def test_delmod_nf(self):
         out = self.base.delmod('foo')

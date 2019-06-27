@@ -6,10 +6,9 @@ class XtensibleBot:
     """
     Modular discord bot
     """
-    def __init__(self, access_token, modules=list(), client=Client(),
+    def __init__(self, access_token, client=Client(), 
                  handler=CommandHandler()):
         self._access_token = access_token
-        self._modules = modules
         self._client = client
         self._handler = handler
 
@@ -25,13 +24,7 @@ class XtensibleBot:
 
     async def on_message(self, message):
         output = self._handler.handle(message.content)
-        await self._client.send_message(
-            message.channel,
-            output
-        )
-
-        if tokens is not None:
-            output = self._handler.handle(tokens)
+        if output is not None and output != '':
             await self._client.send_message(
                 message.channel,
                 output

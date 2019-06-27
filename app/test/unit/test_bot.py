@@ -7,13 +7,25 @@ class FakeClient:
     def run(self, token):
         print('stated with token: {}'.format(token))
 
+    def event(self, arg):
+        pass
 
-class TestBot(unittest.TestCase):
-    def test_create_bot(self):
-        test_bot = XtensibleBot('some_token', FakeClient(),
-                                handler=CommandHandler())
-        self.assertNotEqual(test_bot, None)
+    def send_message(self, arg1, arg2):
+        pass
 
+
+class FakeHandler:
+    def handle(self, *args, **kwargs):
+        return 'foo'
+
+
+class TestBot(unittest.TestCase):  
+    @classmethod
+    def setUp(self):
+        self.bot = XtensibleBot('foo', FakeClient(), FakeHandler())
+
+    def test_run(self):
+        self.bot.run()
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,6 @@
 from inspect import getmembers
+import importlib
+import os
 
 
 class BaseModule:
@@ -16,12 +18,20 @@ class BaseModule:
 
     def __init__(self):
         self._modules = {'base': self}
+        static_modules = [os.path.basename(item.path)
+                          for item in os.scandir("app/modules")
+                          if item.is_dir() and '__pycache__' not in item.path]
+        for mod in static_modules:
+            self._load_module(mod)
 
     def __len__(self):
         return len(self._modules)
 
     def __getitem__(self, key):
         return self._modules[key]
+
+    def __setitem__(self, key, value):
+        self._modules[key] = value
 
     def __contains__(self, key):
         return key in self._modules
@@ -34,7 +44,7 @@ class BaseModule:
         module_path = 'app/modules/{}/module_exports.py'.format(module)
         import_string = 'app.modules.{}.module_exports'.format(module)
         if not os.path.exists(os.path.join(module_path)):
-            raise ModuleNotFoundError(self.MODULE_NF.format(module))
+            raise ModuleNotFoundError(self._NOT_LOADED.format(module))
         key = importlib.import_module(import_string)
         self[module] = key
 
@@ -53,40 +63,24 @@ class BaseModule:
         """
         loaded_modules = []
         failed_loads = []
-        if not isinstance(item, collections.Iterable):
+        if not isinstance(item, list):
             item = [item]
         # merge module hashmaps
         for name in item:
             try:
-                module_obj = self.load_module(name)
+                module_obj = self._load_module(name)
                 self[name] = module_obj
                 loaded_modules.append(name)
             except ModuleNotFoundError:
                 failed_loads.append(name)
         return loaded_modules, failed_loads
 
-    # load all module scripts into modules dict
-    def load_modules(self):
-        """
-        Reload all static modules into the Xtensible-Bot
-        Clears any existing module data from memory
-        !base load_modules
-        """
-        keys = list(self._modules.keys())
-        for module in keys:
-            try:
-                self.load_module(module)
-            except ModuleNotFoundError:
-                # replace with log message
-                print(self.MODULE_NF.format(module))
-                self._modules.pop(module)
-
     def lsmod(self):
         """
         List all modules loaded into the Xtensible-Bot
         !base lsmod
         """
-        return 'Available Modules:\n{}'.format(
+        return 'Loaded Modules:\n{}'.format(
             '\n'.join([module for module in self._modules]))
 
     def delmod(self, module):

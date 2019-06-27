@@ -1,2 +1,1 @@
-from app.modules.util.util import *
-
+from app.modules.util.util import osversion
